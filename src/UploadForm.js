@@ -131,7 +131,7 @@ export default function UploadForm() {
     data.set("dependents", JSON.stringify(dependents)); // Send dependents array as JSON string
     files.forEach((f) => data.append("files", f));
     try {
-      const res = await fetch("http://localhost:5000/process", {
+      const res = await fetch("https://agent-tax-1.onrender.com/process", {
         method: "POST",
         body: data,
       });
@@ -424,7 +424,7 @@ export default function UploadForm() {
               </div>
               {result?.download_url && (
                 <a
-                  href={`http://localhost:5000${result.download_url}`}
+                  href={`https://agent-tax-1.onrender.com/{result.download_url}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{
