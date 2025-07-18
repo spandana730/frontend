@@ -1,11 +1,24 @@
-body {
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
+} */
+
+/* You can copy over your existing Tailwind or custom CSS here */
+body { margin:0; font-family:sans-serif; background:#f7fafc; }
+.container { max-width: 800px; margin: auto; }
+.bg-primary-600 { background-color: #3182ce; }
+.hover\:bg-primary-700:hover { background-color: #2b6cb0; }
+.text-primary-600 { color: #3182ce; }
+
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
