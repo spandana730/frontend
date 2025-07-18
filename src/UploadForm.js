@@ -1,4 +1,3 @@
-
 import React, { useState, useRef } from "react";
 
 // Format currency with 2 decimals, dollar sign, and commas
@@ -68,9 +67,9 @@ export default function UploadForm() {
     taxpayer_signature: "", signature_date: "",
   });
 
-  // NEW: Dynamic dependents state (list of objects)
+  // Dynamic dependents state (list of objects)
   const [dependents, setDependents] = useState([]);
-  const [validationErrors, setValidationErrors] = useState([]); // <--- NEW
+  const [validationErrors, setValidationErrors] = useState([]);
 
   // Loading/result state
   const [loading, setLoading] = useState(false);
@@ -101,7 +100,7 @@ export default function UploadForm() {
     setFormValues((v) => ({ ...v, [name]: value }));
   };
 
-  // ---- DEPENDENTS DYNAMIC FIELDS ----
+  // Dependents
   const addDependent = () =>
     setDependents([...dependents, { first_name: "", last_name: "", ssn: "", relationship: "" }]);
   const updateDependent = (idx, field, value) => {
@@ -122,13 +121,13 @@ export default function UploadForm() {
       formValues.filing_status
     );
 
-  // ---- SUBMIT AND BACKEND ERROR HANDLING ----
+  // Submit to backend
   const handleCalculate = async () => {
     setLoading(true);
-    setValidationErrors([]); // Clear any previous
+    setValidationErrors([]);
     const data = new FormData();
     Object.entries(formValues).forEach(([k, v]) => data.append(k, v));
-    data.set("dependents", JSON.stringify(dependents)); // Send dependents array as JSON string
+    data.set("dependents", JSON.stringify(dependents));
     files.forEach((f) => data.append("files", f));
     try {
       const res = await fetch("https://agent-tax-1.onrender.com/process", {
@@ -224,7 +223,6 @@ export default function UploadForm() {
       case 1:
         return (
           <div>
-            {/* ---- Display backend validation errors, if any ---- */}
             {validationErrors.length > 0 && (
               <div style={{ color: "red", marginBottom: 16 }}>
                 <b>Please correct:</b> {validationErrors.join(", ")}
@@ -235,8 +233,6 @@ export default function UploadForm() {
               <input name="middle_initial" placeholder="MI" value={formValues.middle_initial} onChange={handleChange} style={{ width: 60 }} />
               <input name="last_name" placeholder="Last Name" value={formValues.last_name} onChange={handleChange} required />
               <input name="ssn" placeholder="SSN" value={formValues.ssn} onChange={handleChange} required />
-
-              {/* ---- SPOUSE DYNAMIC FIELDS ---- */}
               {showSpouse && (
                 <>
                   <input name="spouse_first_name" placeholder="Spouse First" value={formValues.spouse_first_name} onChange={handleChange} required={showSpouse} />
@@ -245,7 +241,6 @@ export default function UploadForm() {
                   <input name="spouse_ssn" placeholder="Spouse SSN" value={formValues.spouse_ssn} onChange={handleChange} required={showSpouse} />
                 </>
               )}
-
               <input name="address_line1" placeholder="Street Address" value={formValues.address_line1} onChange={handleChange} required />
               <input name="address_apt" placeholder="Apt/Suite" value={formValues.address_apt} onChange={handleChange} />
               <input name="city" placeholder="City" value={formValues.city} onChange={handleChange} required />
@@ -258,8 +253,6 @@ export default function UploadForm() {
                 <option value="head_of_household">Head of Household</option>
                 <option value="qualifying_surviving_spouse">Qualifying Surviving Spouse</option>
               </select>
-
-              {/* ---- DEPENDENTS DYNAMIC FIELDS ---- */}
               {showDependents && (
                 <div style={{ margin: "10px 0" }}>
                   <b>Dependents:</b>
@@ -299,10 +292,7 @@ export default function UploadForm() {
                   </button>
                 </div>
               )}
-
-              {/* hidden field for backend compatibility */}
               <input type="hidden" name="dependents" value="[]" />
-
               <input name="routing_number" placeholder="Routing #" value={formValues.routing_number} onChange={handleChange} />
               <input name="account_number" placeholder="Account #" value={formValues.account_number} onChange={handleChange} />
               <input name="taxpayer_signature" placeholder="Signature Name" value={formValues.taxpayer_signature} onChange={handleChange} required />
@@ -424,7 +414,7 @@ export default function UploadForm() {
               </div>
               {result?.download_url && (
                 <a
-                  href={`https://agent-tax-1.onrender.com/{result.download_url}`}
+                  href={`https://agent-tax-1.onrender.com${result.download_url}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{
@@ -513,4 +503,3 @@ export default function UploadForm() {
     </div>
   );
 }
-
